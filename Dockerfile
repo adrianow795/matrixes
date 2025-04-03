@@ -13,10 +13,7 @@ COPY . /usr/src/matrixes_docker
 
 # set work directory
 WORKDIR /usr/src/matrixes_docker
-#RUN mkdir build
-#RUN cd build
-RUN cmake .  
-RUN make
+RUN cmake -B build && cmake --build build
 
-CMD ["./matrix"]
+CMD ["build/matrix"]
 

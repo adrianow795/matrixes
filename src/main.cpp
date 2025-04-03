@@ -20,37 +20,10 @@ int main()
         }
     }
 
-    std::cout << "Matrix m1: " << std::endl;
-    for(auto i = 0u; i < x; i++)
-    {
-        for(auto j =0u; j < x; j++)
-        {
-            std::cout << m1.matrix[i][j] << "   ";
-        }
-        std::cout << std::endl;
-    }
-
-    std::cout << "Matrix m2: " << std::endl;
-    for(auto i = 0u; i < x; i++)
-    {
-        for(auto j =0u; j < x; j++)
-        {
-            std::cout << m2.matrix[i][j] << "   ";
-        }
-        std::cout << std::endl;
-    }
-
+    m1.show("m1");
+    m2.show("m2");
     m3 = m1 + m2;
-    std::cout << "Matrix m3 = m1 + m2: " << std::endl;
-    for(auto i = 0u; i < x; i++)
-    {
-        for(auto j =0u; j < x; j++)
-        {
-            std::cout << m3.matrix[i][j] << "   ";
-        }
-        std::cout << std::endl;
-    }
-
+    m3.show("m3");
 
     return 0;
 }
