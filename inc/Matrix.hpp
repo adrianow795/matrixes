@@ -16,6 +16,10 @@ class Matrix
     
     std::vector<Type>& operator[] (const int a)
     {
+        if((a < 0) || (a >= data_.size()))
+        {
+            throw std::out_of_range("Index out of range");
+        }
         return data_[a];
     }
 
