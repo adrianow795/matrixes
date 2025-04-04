@@ -7,12 +7,12 @@
 #include <iomanip>
 
 
-template <typename Type> 
+template <typename Type, size_t rows, size_t cols> 
 class Matrix
 {
     public:
 
-    Matrix(int size_x, int size_y) : data_(size_x, std::vector<Type>(size_y)) {}
+    Matrix() : data_(rows, std::vector<Type>(cols)) {}
     
     std::vector<Type>& operator[] (const int a)
     {
@@ -23,7 +23,7 @@ class Matrix
         return data_[a];
     }
 
-    Matrix<Type> operator+(const Matrix& b) const 
+    Matrix operator+(const Matrix& b) const 
     {
         if((data_.size() != b.data_.size()) ||
            (data_[0].size() != b.data_[0].size()))
@@ -31,7 +31,7 @@ class Matrix
             throw std::invalid_argument("Incorrect matrixes size");
         }
 
-        Matrix<Type> result(data_.size(), data_[0].size());
+        Matrix<Type, rows, cols> result;
         for(auto i = 0u; i < data_.size(); i++)
         {
             for(auto j = 0u; j < data_[0].size(); j++)
@@ -41,8 +41,8 @@ class Matrix
         }
         return result;
     }
-    template <typename T>
-    friend std::ostream& operator<<(std::ostream &os, const Matrix<T> & mat);
+    template <typename T, size_t r, size_t c> 
+    friend std::ostream& operator<<(std::ostream &os, const Matrix<T,r,c> & mat);
 
     void show(std::string &&name) const
     {
@@ -65,8 +65,8 @@ class Matrix
 };
 
 
-template <typename T>
-std::ostream& operator<<(std::ostream& os, const Matrix<T>& mat) {
+template <typename T, size_t r, size_t c> 
+std::ostream& operator<<(std::ostream& os, const Matrix<T, r, c>& mat) {
     for (const auto& row : mat.data_) {
         for (const auto& el : row) {
             os << std::internal << std::setw(10) << el << " | ";

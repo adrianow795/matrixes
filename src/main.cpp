@@ -5,10 +5,10 @@
 
 int main()
 {
-    int x = 3;
-    Matrix<double> m1(x,x);
-    Matrix<double> m2(x,x);
-    Matrix<double> m3(x,x);
+    constexpr auto x = 3;
+    Matrix<double,x,x> m1;
+    Matrix<double,x,x> m2;
+    Matrix<double,x,x> m3;
     std::srand(std::time({})); // use current time as seed for random generator
 
     for(auto i = 0u; i < x; i++)
