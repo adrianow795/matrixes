@@ -15,8 +15,8 @@ int main()
     {
         for(auto j =0u; j < x; j++)
         {
-            m1.data_[i][j] = (std::rand() % 20) * 0.7;
-            m2.data_[i][j] = (std::rand() % 100) * 0.5;
+            m1[i][j] = (std::rand() % 20) * 0.7;
+            m2[i][j] = (std::rand() % 100) * 0.5;
         }
     }
     std::cout << m1;

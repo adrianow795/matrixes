@@ -11,38 +11,47 @@ template <typename Type>
 class Matrix
 {
     public:
-    std::vector<std::vector<Type>> data_;
 
-    Matrix(int size_x, int size_y) : dim_x_(size_x), dim_y_(size_y) 
+    Matrix(int size_x, int size_y)
     { 
-        data_.resize(dim_x_, std::vector<Type>(dim_y_));
+        data_.resize(size_x, std::vector<Type>(size_y));
     }
     
+    std::vector<Type>& operator[] (const int a)
+    {
+        return data_[a];
+    }
+
     Matrix operator+(const Matrix& b) const 
     {
-        Matrix<Type> result(this->dim_x_, this->dim_y_);
-        for(auto i = 0u; i < this->dim_x_; i++)
+        if((data_.size() != b.data_.size()) ||
+           (data_[0].size() != b.data_[0].size()))
         {
-            for(auto j = 0u; j < this->dim_y_; j++)
+            throw std::invalid_argument("Incorrect matrixes size");
+        }
+
+        Matrix<Type> result(data_.size(), data_[0].size());
+        for(auto i = 0u; i < data_.size(); i++)
+        {
+            for(auto j = 0u; j < data_[0].size(); j++)
             {
                 result.data_[i][j] = this->data_[i][j] + b.data_[i][j];
             }
         }
         return result;
     }
-
     template <typename T>
-    friend std::ostream& operator<<(std::ostream &os, const Matrix<Type> & mat);
+    friend std::ostream& operator<<(std::ostream &os, const Matrix<T> & mat);
 
     void show(std::string &&name) const
     {
         std::cout << std::setw(10) << "============" << std::setw(10) <<
             std::internal <<   name << std::setw(10) << "   ============" << std::endl;
-        for(auto i = 0u; i < dim_x_; i++)
+        for(const auto& row: data_)
         {
-            for(auto j =0u; j < dim_y_; j++)
+            for(const auto& el: row)
             {
-                std::cout << std::setw(10) << data_[i][j] << " | ";
+                std::cout << std::setw(10) << el << " | ";
             }
             std::cout << std::endl;
         }
@@ -50,9 +59,7 @@ class Matrix
     }
 
     private:
-    
-    int dim_x_;
-    int dim_y_;
+    std::vector<std::vector<Type>> data_;
 
 };
 
@@ -61,10 +68,11 @@ template <typename T>
 std::ostream& operator<<(std::ostream& os, const Matrix<T>& mat) {
     for (const auto& row : mat.data_) {
         for (const auto& el : row) {
-            os << std::setw(10) << el << " | ";
+            os << std::internal << std::setw(10) << el << " | ";
         }
         os << '\n';
     }
+    os << '\n';
     return os;
 }
 
