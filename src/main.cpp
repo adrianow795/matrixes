@@ -15,14 +15,15 @@ int main()
     {
         for(auto j =0u; j < x; j++)
         {
-            m1.matrix[i][j] = (std::rand() % 20) * 0.7;
-            m2.matrix[i][j] = (std::rand() % 100) * 0.5;
+            m1.data_[i][j] = (std::rand() % 20) * 0.7;
+            m2.data_[i][j] = (std::rand() % 100) * 0.5;
         }
     }
-
+    std::cout << m1;
+    
     m1.show("m1");
     m2.show("m2");
-    m3 = m1 + m2;
+    m3 = m1 + m2; //RVO return value opt
     m3.show("m3");
 
     return 0;

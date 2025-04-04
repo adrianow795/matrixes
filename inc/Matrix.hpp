@@ -7,15 +7,15 @@
 #include <iomanip>
 
 
-template <class Type> 
+template <typename Type> 
 class Matrix
 {
     public:
-    std::vector<std::vector<Type>> matrix;
+    std::vector<std::vector<Type>> data_;
 
     Matrix(int size_x, int size_y) : dim_x_(size_x), dim_y_(size_y) 
     { 
-        matrix.resize(dim_x_, std::vector<Type>(dim_y_));
+        data_.resize(dim_x_, std::vector<Type>(dim_y_));
     }
     
     Matrix operator+(const Matrix& b) const 
@@ -25,11 +25,14 @@ class Matrix
         {
             for(auto j = 0u; j < this->dim_y_; j++)
             {
-                result.matrix[i][j] = this->matrix[i][j] + b.matrix[i][j];
+                result.data_[i][j] = this->data_[i][j] + b.data_[i][j];
             }
         }
         return result;
     }
+
+    template <typename T>
+    friend std::ostream& operator<<(std::ostream &os, const Matrix<Type> & mat);
 
     void show(std::string &&name) const
     {
@@ -39,14 +42,12 @@ class Matrix
         {
             for(auto j =0u; j < dim_y_; j++)
             {
-                std::cout << std::setw(10) << matrix[i][j] << " | ";
+                std::cout << std::setw(10) << data_[i][j] << " | ";
             }
             std::cout << std::endl;
         }
         std::cout << std::endl;
     }
-
-    
 
     private:
     
@@ -54,5 +55,17 @@ class Matrix
     int dim_y_;
 
 };
+
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const Matrix<T>& mat) {
+    for (const auto& row : mat.data_) {
+        for (const auto& el : row) {
+            os << std::setw(10) << el << " | ";
+        }
+        os << '\n';
+    }
+    return os;
+}
 
 #endif
