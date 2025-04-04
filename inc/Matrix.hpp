@@ -12,17 +12,14 @@ class Matrix
 {
     public:
 
-    Matrix(int size_x, int size_y)
-    { 
-        data_.resize(size_x, std::vector<Type>(size_y));
-    }
+    Matrix(int size_x, int size_y) : data_(size_x, std::vector<Type>(size_y)) {}
     
     std::vector<Type>& operator[] (const int a)
     {
         return data_[a];
     }
 
-    Matrix operator+(const Matrix& b) const 
+    Matrix<Type> operator+(const Matrix& b) const 
     {
         if((data_.size() != b.data_.size()) ||
            (data_[0].size() != b.data_[0].size()))
