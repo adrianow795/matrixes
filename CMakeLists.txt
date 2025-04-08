@@ -43,16 +43,16 @@ target_link_libraries(${PROJECT_NAME} PRIVATE matrix_lib)
 
 # Link GoogleTest for unit testing
 enable_testing()
-add_executable(matrix_tests ${PRJ_TST_PATH}testMatrix.cpp)
-target_link_libraries(matrix_tests PRIVATE matrix_lib gtest gtest_main)
-target_include_directories(matrix_tests PRIVATE ${PRJ_INC_PATH})
+add_executable(${PROJECT_NAME}_tests ${PRJ_TST_PATH}testMatrix.cpp)
+target_link_libraries(${PROJECT_NAME}_tests PRIVATE matrix_lib gtest gtest_main)
+target_include_directories(${PROJECT_NAME}_tests PRIVATE ${PRJ_INC_PATH})
 
 # Enable code coverage
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_options(matrix_tests PRIVATE --coverage)
-    target_link_options(matrix_tests PRIVATE --coverage)
+    target_compile_options(${PROJECT_NAME}_tests PRIVATE --coverage)
+    target_link_options(${PROJECT_NAME}_tests PRIVATE --coverage)
 endif()
 
 # Add tests
 include(GoogleTest)
-gtest_discover_tests(matrix_tests)
+gtest_discover_tests(${PROJECT_NAME}_tests)
