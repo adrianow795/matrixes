@@ -125,15 +125,12 @@ class Matrix
         Matrix<Type, rows, cols_o> result;
         for(auto i = 0; i < rows; i++)
         {
-            for(auto j = 0; j < cols_o; j++)
-            {
-                addJob([this, i, j, &result[i][j]] {
-                    this->calculateIdx(this->data_[i], b.data_[j], result[i][j]);
-                })
-            }
+            addJob([this, &b, i, &result]() {
+                this->calculateRow(b, i, result);
+            });
         }
 
-
+        return std::optional<Matrix<Type, rows, cols_o>>(result);
 
     }
     private:
@@ -170,16 +167,21 @@ class Matrix
         mutex_condition_.notify_one();
     }
 
-    void calculateIdx(std::vector<Type> &vec_row, std::vector<Type> &vec_col, Type &result)
+    template < size_t rows_o, size_t cols_o>
+    void calculateRow(const Matrix<Type, rows_o, cols_o> &b,
+                      const size_t rowIdx,
+                      Matrix<Type, rows, cols_o> &result)
     {
-        Type result = 0;
-        for(auto i = 0; i < vec_row.size(); i++)
-        {
-            result += vec_row[i] * vec_col[i];
-        }
-        return result;
-    }
 
+        for(auto j = 0; j < cols_o; j++)
+        {
+            result[rowIdx][j] = 0;
+            for (auto z = 0; z < cols; z++)
+            {
+                result[rowIdx][j] += data_[rowIdx][z] * b[z][j];
+            }
+        }
+    }
 };
 
 
