@@ -6,13 +6,19 @@
 #include <string>
 #include <iomanip>
 #include <optional>
+#include <thread>
+#include <functional>
+#include <mutex> 
+#include <condition_variable>
+#include <queue>
+
 
 template <typename Type, size_t rows, size_t cols> 
 class Matrix
 {
     public:
     /* constructor */
-    Matrix() : data_(rows, std::vector<Type>(cols)) {}
+    Matrix() : data_(rows, std::vector<Type>(cols)) { }
     
     /* operator []*/
     std::vector<Type>& operator[](const int a)
@@ -37,7 +43,7 @@ class Matrix
     /* multiplyBy */
     template < size_t rows_o, size_t cols_o>
     std::optional<Matrix<Type, rows, cols_o>> multiplyBy(const Matrix<Type, rows_o, cols_o> & b)  const
-    { 
+    {
         /* 1st martix needs to have as many cols as 2nd one rows */
         if(cols != rows_o)
         {
@@ -61,6 +67,8 @@ class Matrix
         }
         return std::optional<Matrix<Type, rows, cols_o>>(result);
     }
+
+
 
     /* operator + */
     Matrix operator+(const Matrix& b) const 
@@ -102,8 +110,75 @@ class Matrix
         std::cout << std::endl;
     }
 
+    /* multiplyByOnThreads */
+    template < size_t rows_o, size_t cols_o>
+    std::optional<Matrix<Type, rows, cols_o>> multiplyByOnThreads(const Matrix<Type, rows_o, cols_o> & b)  const
+    {
+        /* 1st martix needs to have as many cols as 2nd one rows */
+        if(cols != rows_o)
+        {
+            std::cout << "Matrixes cannot be multiplied" << std::endl;
+            return std::nullopt;
+        }
+
+        /* cannot use 'this', so use rows (template arg) instead*/
+        Matrix<Type, rows, cols_o> result;
+        for(auto i = 0; i < rows; i++)
+        {
+            for(auto j = 0; j < cols_o; j++)
+            {
+                addJob([this, i, j, &result[i][j]] {
+                    this->calculateIdx(this->data_[i], b.data_[j], result[i][j]);
+                })
+            }
+        }
+
+
+
+    }
     private:
+    bool should_terminate_ = false;
     std::vector<std::vector<Type>> data_;
+    std::mutex queue_mutex_;
+    std::condition_variable mutex_condition_;
+    std::vector<std::thread> theads_;
+    std::queue<std::function<void()>> jobs_;
+
+
+    void th(void)
+    {
+        while(true)
+        {
+            std::function<void()> job;
+            {
+                std::unique_lock<std::mutex> lock(queue_mutex_);
+                mutex_condition_.wait(lock, [this] 
+                    {
+                    return (!jobs_.empty() || should_terminate_); 
+                    });
+                job = jobs_.front();
+                jobs_.pop();
+            }
+            job();
+        }
+    }
+
+    void addJob(std::function<void()> job)
+    {
+        std::unique_lock<std::mutex> lock(queue_mutex_);
+        jobs_.push(job);
+        mutex_condition_.notify_one();
+    }
+
+    void calculateIdx(std::vector<Type> &vec_row, std::vector<Type> &vec_col, Type &result)
+    {
+        Type result = 0;
+        for(auto i = 0; i < vec_row.size(); i++)
+        {
+            result += vec_row[i] * vec_col[i];
+        }
+        return result;
+    }
 
 };
 
