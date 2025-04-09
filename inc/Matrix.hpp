@@ -6,6 +6,7 @@
 #include <string>
 #include <iomanip>
 #include <optional>
+#include <thread>
 
 template <typename Type, size_t rows, size_t cols> 
 class Matrix
@@ -60,6 +61,47 @@ class Matrix
             }
         }
         return std::optional<Matrix<Type, rows, cols_o>>(result);
+    }
+
+    template < size_t rows_o, size_t cols_o>
+    std::optional<Matrix<Type, rows, cols_o>> multiplyByWithThreads(const Matrix<Type, rows_o, cols_o> & b)  const
+    {
+        /* 1st martix needs to have as many cols as 2nd one rows */
+        if(cols != rows_o)
+        {
+            std::cout << "Matrixes cannot be multiplied" << std::endl;
+            return std::nullopt;
+        }
+        Matrix<Type, rows, cols_o> result;
+        constexpr auto thread_num = std::min<size_t>(10, rows);
+        size_t chunk_size = rows / thread_num;
+        std::vector<std::thread> workers;
+
+        for(auto i = 0; i < thread_num; i++)
+        {
+            workers.push_back(std::thread([&, i]{
+                for(auto x = i*chunk_size; x < i*chunk_size + chunk_size && x < rows; x++)
+                {
+                    for(auto j = 0; j < cols_o; j++)
+                    {
+                        Type temp = 0;
+                        for(auto z = 0; z < cols; z++)
+                        {
+                            temp += data_[x][z] * b[z][j];
+                        }
+                        result[x][j] = temp;
+                    }
+                }
+            }));
+        }
+
+        for(auto &th : workers)
+        {
+            th.join();
+        }
+
+        return std::optional<Matrix<Type, rows, cols_o>>(result);
+
     }
 
     /* operator + */
