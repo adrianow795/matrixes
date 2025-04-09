@@ -41,6 +41,7 @@ constexpr int fiboRec(int el)
     }
 }
 
+
 int main()
 {
     constexpr auto x = 3;
@@ -62,7 +63,41 @@ int main()
     m1.show("m1");
     m2.show("m2");
     m3 = m1 + m2; //RVO return value opt
-    m3.show("m3");
+    m3.show("m1 + m2");
+
+    Matrix<int,2,3> d1;
+    Matrix<int,3,2> d2;
+
+    for(auto i = 0u; i < 2; i++)
+    {
+        for(auto j =0u; j < 3; j++)
+        {
+            d1[i][j] = (std::rand() % 10) ;
+        }
+    }
+
+    for(auto i = 0u; i < 3; i++)
+    {
+        for(auto j =0u; j < 2; j++)
+        {
+            d2[i][j] = (std::rand() % 10) ;
+        }
+    }
+    // d2[3,2] , d1[2,3]
+    auto result = d1.multiplyBy(d2);
+    if(result.has_value())
+    {
+        auto d3 = result.value();
+        std::cout << "-----: d1\n" << d1 << std::endl;
+        std::cout << "-----: d2\n" << d2 << std::endl;
+        std::cout << "-----: d2 * d1\n" << d3 << std::endl;
+    }
+    else
+    {
+        std::cout << "Matrixes cannot be multiplied" << std::endl;
+    }
+
+
 
     #define ELEMENT_NO 20
     time_t start_time, end_time;
