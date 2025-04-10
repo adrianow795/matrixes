@@ -20,12 +20,17 @@ namespace GeoObj
         return corners_.size();
     }
 
+    std::pair<double, double>& GeometricObject::operator[] (size_t idx)
+    {
+        return corners_[idx];
+    }
+
     double GeometricObject::computeArea()
     {
         return 10;
     }
 
-    void GeometricObject::drawGeoObj()
+    void GeometricObject::draw()
     {
         
     }

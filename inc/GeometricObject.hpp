@@ -17,14 +17,17 @@ namespace GeoObj
 
         size_t getNumberOfConrners();
         virtual double computeArea();
-        virtual void drawGeoObj(); 
+        virtual void draw(); 
         void addCorner(const std::pair<double, double>& point);
         void printCorners();
+
+        std::pair<double, double>& operator[] (size_t idx);
 
 
 
         protected:
         std::vector<std::pair<double, double>> corners_;
+        size_t number_of_corners_;
 
 
     };

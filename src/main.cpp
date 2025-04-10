@@ -7,8 +7,8 @@
 #include <numeric>
 #include "GeometricObject.hpp"
 #include "gnuplot-iostream.h"
-#include "Square.hpp"
-
+#include "Rectangle.hpp"
+#include "Circle.hpp"
 
 constexpr int fibo(int el)
 {
@@ -247,7 +247,10 @@ void GeoObjTest()
     std::vector<std::pair<double,double>> vec;
     vec.push_back(std::pair<double,double>(1.0,1.0));
     vec.push_back(std::pair<double,double>(4.0,4.0));
-    GeoObj::Square s1(vec);
+    GeoObj::Rectangle s1(vec);
+    s1.draw();
+    GeoObj::Circle c1(std::pair<double,double>(2.0,2.0), 1.0);
+    c1.draw();
 
 
 }
