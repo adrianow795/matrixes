@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <numeric>
 #include "GeometricObject.hpp"
+#include "gnuplot-iostream.h"
 
 constexpr int fibo(int el)
 {
@@ -45,11 +46,13 @@ constexpr int fiboRec(int el)
 }
 
 void MultiplicationTest();
+void GnuPlotExample();
+void GnuPlotExample2();
 int main()
 {
-    MultiplicationTest();
-    GeoObj::GeometricObject g1;
-
+    //MultiplicationTest();
+    //GnuPlotExample();
+    GnuPlotExample2();
     #if 0
     constexpr auto x = 3;
     Matrix<double,x,x> m1;
@@ -193,4 +196,38 @@ void MultiplicationTest()
     max_duration = *std::max_element(durations.begin(), durations.end());
     average_duration = std::accumulate(durations.begin(), durations.end(), 0.0) / durations.size();
     std::cout << "[multiplyByWithThreads] Min: " << min_duration << " Max: " << max_duration<< " Average: " << average_duration <<  " microseconds" << std::endl;
+}
+
+void GnuPlotExample()
+{
+    GeoObj::GeometricObject g1;
+    Gnuplot gp;
+    std::vector<std::pair<double,double>> xy_pts;
+
+    for(double x = -2.0; x <=2; x += 0.01)
+    {
+        double y = x*x;
+        xy_pts.push_back(std::make_pair(x,y));
+    }
+    gp << "plot '-' with lines title 'y=x^2'\n";
+    gp.send1d(xy_pts);
+}
+
+void GnuPlotExample2()
+{
+    GeoObj::GeometricObject g1;
+    Gnuplot gp;
+    std::vector<std::pair<double,double>> xy_pts;
+
+
+    xy_pts.push_back(std::make_pair(1,1));
+    xy_pts.push_back(std::make_pair(3,4));
+
+
+    gp << "set object 1 rectangle from " << 
+    xy_pts[0].first << "," << xy_pts[0].second <<" to " 
+    << xy_pts[1].first << "," << xy_pts[1].second 
+    <<"fs empty border lc rgb 'blue'\n";
+   //gp.send1d(xy_pts);
+   gp << "plot [-1:4][-1:3] sin(x)\n";
 }

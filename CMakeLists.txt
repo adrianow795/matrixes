@@ -27,6 +27,13 @@ set(BUILD_GMOCK OFF)
 set(INSTALL_GTEST OFF)
 FetchContent_MakeAvailable(googletest)
 
+# Find Boost
+find_package(Boost REQUIRED COMPONENTS iostreams)
+
+# Include Boost headers
+include_directories(${Boost_INCLUDE_DIRS})
+
+
 # Add the library
 add_library(matrix_lib 
   ${PRJ_SRC_PATH}Matrix.cpp
@@ -42,6 +49,8 @@ endif()
 # Add the executable
 add_executable(${PROJECT_NAME} ${PRJ_SRC_PATH}main.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE matrix_lib)
+# Link Boost libraries
+target_link_libraries(matrix PRIVATE ${Boost_LIBRARIES})
 
 # Link GoogleTest for unit testing
 enable_testing()
