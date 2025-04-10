@@ -5,6 +5,7 @@
 #include <chrono>
 #include <algorithm>
 #include <numeric>
+#include "GeometricObject.hpp"
 
 constexpr int fibo(int el)
 {
@@ -47,6 +48,8 @@ void MultiplicationTest();
 int main()
 {
     MultiplicationTest();
+    GeoObj::GeometricObject g1;
+
     #if 0
     constexpr auto x = 3;
     Matrix<double,x,x> m1;

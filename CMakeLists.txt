@@ -28,7 +28,9 @@ set(INSTALL_GTEST OFF)
 FetchContent_MakeAvailable(googletest)
 
 # Add the library
-add_library(matrix_lib ${PRJ_SRC_PATH}Matrix.cpp)
+add_library(matrix_lib 
+  ${PRJ_SRC_PATH}Matrix.cpp
+  ${PRJ_SRC_PATH}GeometricObject.cpp )
 target_include_directories(matrix_lib PUBLIC ${PRJ_INC_PATH})
 
 # Enable code coverage
