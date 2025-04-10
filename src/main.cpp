@@ -7,6 +7,8 @@
 #include <numeric>
 #include "GeometricObject.hpp"
 #include "gnuplot-iostream.h"
+#include "Square.hpp"
+
 
 constexpr int fibo(int el)
 {
@@ -48,11 +50,13 @@ constexpr int fiboRec(int el)
 void MultiplicationTest();
 void GnuPlotExample();
 void GnuPlotExample2();
+void GeoObjTest();
 int main()
 {
     //MultiplicationTest();
     //GnuPlotExample();
-    GnuPlotExample2();
+    //GnuPlotExample2();
+    GeoObjTest();
     #if 0
     constexpr auto x = 3;
     Matrix<double,x,x> m1;
@@ -230,4 +234,20 @@ void GnuPlotExample2()
     <<"fs empty border lc rgb 'blue'\n";
    //gp.send1d(xy_pts);
    gp << "plot [-1:4][-1:3] sin(x)\n";
+}
+
+void GeoObjTest()
+{
+    /*
+    GeoObj::GeometricObject g1;
+    g1.addCorner(std::pair<double,double>(1.0, 1.0));
+    g1.addCorner(std::pair<double,double>(3.0, 3.0));
+    g1.printCorners();
+    */
+    std::vector<std::pair<double,double>> vec;
+    vec.push_back(std::pair<double,double>(1.0,1.0));
+    vec.push_back(std::pair<double,double>(4.0,4.0));
+    GeoObj::Square s1(vec);
+
+
 }

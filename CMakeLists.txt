@@ -15,6 +15,10 @@ set(PRJ_SRC_PATH src/)
 set(PRJ_INC_PATH inc/)
 set(PRJ_TST_PATH test/)
 
+# Add coverage flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+
 # Fetch GoogleTest
 include(FetchContent)
 FetchContent_Declare(
@@ -37,7 +41,8 @@ include_directories(${Boost_INCLUDE_DIRS})
 # Add the library
 add_library(matrix_lib 
   ${PRJ_SRC_PATH}Matrix.cpp
-  ${PRJ_SRC_PATH}GeometricObject.cpp )
+  ${PRJ_SRC_PATH}GeometricObject.cpp 
+  ${PRJ_SRC_PATH}Square.cpp )
 target_include_directories(matrix_lib PUBLIC ${PRJ_INC_PATH})
 
 # Enable code coverage
