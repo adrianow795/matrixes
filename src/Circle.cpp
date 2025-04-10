@@ -24,7 +24,7 @@ namespace GeoObj
         gp << "set object 1 circle at " << 
         corners_[0].first << "," << corners_[0].second <<" radius " 
         << r_ <<" fs empty border lc rgb 'red'\n";
-       gp << "plot [-1:4][-1:3] sin(x)\n";
+        gp << "plot [-1:5][-1:5] 1/0 notitle\n";
 
     }
 

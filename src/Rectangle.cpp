@@ -35,9 +35,8 @@ namespace GeoObj
         corners_[0].first << "," << corners_[0].second <<" to " 
         << corners_[1].first << "," << corners_[1].second 
         <<"fs empty border lc rgb 'blue'\n";
-       //gp.send1d(xy_pts);
-       gp << "plot [-1:4][-1:3] sin(x)\n";
-        //gp.send1d(xy_pts);
+        gp << "plot [-1:5][-1:5] 1/0 notitle\n";
+
     }
 
 
