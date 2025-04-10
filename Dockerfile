@@ -11,6 +11,8 @@ RUN apt install -y lcov
 RUN apt install -y doxygen
 
 
+RUN apt install -y graphviz
+
 #### Install gnuplot and its dependencie: boost, openGL and MESA 
 RUN apt-get install -y libgnuplot-iostream-dev
 RUN apt install -y libboost-all-dev

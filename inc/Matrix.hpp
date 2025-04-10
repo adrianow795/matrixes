@@ -8,14 +8,35 @@
 #include <optional>
 #include <thread>
 
+/**
+ * @class Matrix
+ * @brief Represents a 2D matrix with basic operations.
+ * 
+ * This class provides functionality for matrix operations such as addition,
+ * multiplication, and multithreaded multiplication.
+ * 
+ * @tparam Type The data type of the matrix elements.
+ * @tparam rows The number of rows in the matrix.
+ * @tparam cols The number of columns in the matrix.
+ */
 template <typename Type, size_t rows, size_t cols> 
 class Matrix
 {
     public:
-    /* constructor */
+    /**
+     * @brief Default constructor.
+     * 
+     * Initializes the matrix with default values.
+     */
     Matrix() : data_(rows, std::vector<Type>(cols)) {}
     
-    /* operator []*/
+    /**
+     * @brief Access a row of the matrix (non-const).
+     * 
+     * @param a The index of the row.
+     * @return A reference to the row.
+     * @throws std::out_of_range If the index is out of range.
+     */
     std::vector<Type>& operator[](const int a)
     {
         if ((a < 0) || (a >= data_.size()))
@@ -25,7 +46,13 @@ class Matrix
         return data_[a];
     }
 
-    /* const operator []*/
+    /**
+     * @brief Access a row of the matrix (const).
+     * 
+     * @param a The index of the row.
+     * @return A const reference to the row.
+     * @throws std::out_of_range If the index is out of range.
+     */
     const std::vector<Type>& operator[](const int a) const
     {
         if ((a < 0) || (a >= data_.size()))
@@ -35,18 +62,23 @@ class Matrix
         return data_[a];
     }
 
-    /* multiplyBy */
+    /**
+     * @brief Multiply the matrix with another matrix.
+     * 
+     * @tparam rows_o The number of rows in the second matrix.
+     * @tparam cols_o The number of columns in the second matrix.
+     * @param b The second matrix to multiply with.
+     * @return An optional matrix containing the result, or `std::nullopt` if the matrices cannot be multiplied.
+     */
     template < size_t rows_o, size_t cols_o>
     std::optional<Matrix<Type, rows, cols_o>> multiplyBy(const Matrix<Type, rows_o, cols_o> & b)  const
     { 
-        /* 1st martix needs to have as many cols as 2nd one rows */
         if(cols != rows_o)
         {
             std::cout << "Matrixes cannot be multiplied" << std::endl;
             return std::nullopt;
         }
 
-        /* cannot use 'this', so use rows (template arg) instead*/
         Matrix<Type, rows, cols_o> result;
 
         for(auto i = 0; i < rows; i++)
@@ -63,10 +95,17 @@ class Matrix
         return std::optional<Matrix<Type, rows, cols_o>>(result);
     }
 
+    /**
+     * @brief Multiply the matrix with another matrix using multiple threads.
+     * 
+     * @tparam rows_o The number of rows in the second matrix.
+     * @tparam cols_o The number of columns in the second matrix.
+     * @param b The second matrix to multiply with.
+     * @return An optional matrix containing the result, or `std::nullopt` if the matrices cannot be multiplied.
+     */
     template < size_t rows_o, size_t cols_o>
     std::optional<Matrix<Type, rows, cols_o>> multiplyByWithThreads(const Matrix<Type, rows_o, cols_o> & b)  const
     {
-        /* 1st martix needs to have as many cols as 2nd one rows */
         if(cols != rows_o)
         {
             std::cout << "Matrixes cannot be multiplied" << std::endl;
@@ -104,7 +143,13 @@ class Matrix
 
     }
 
-    /* operator + */
+    /**
+     * @brief Add two matrices.
+     * 
+     * @param b The matrix to add.
+     * @return A new matrix containing the result of the addition.
+     * @throws std::invalid_argument If the matrices have different sizes.
+     */
     Matrix operator+(const Matrix& b) const 
     {
         if((data_.size() != b.data_.size()) ||
@@ -124,11 +169,24 @@ class Matrix
         return result;
     }
 
-    /* operator ostream <<  - this is fried method because we need to have access to private data_*/
+    /**
+     * @brief Print the matrix to an output stream.
+     * 
+     * @tparam T The data type of the matrix elements.
+     * @tparam r The number of rows in the matrix.
+     * @tparam c The number of columns in the matrix.
+     * @param os The output stream.
+     * @param mat The matrix to print.
+     * @return The output stream.
+     */
     template <typename T, size_t r, size_t c> 
     friend std::ostream& operator<<(std::ostream &os, const Matrix<T,r,c> & mat);
 
-    /* additional function for showing */
+    /**
+     * @brief Display the matrix with a name.
+     * 
+     * @param name The name of the matrix.
+     */
     void show(std::string &&name) const
     {
         std::cout << std::setw(10) << "============" << std::setw(10) <<
@@ -145,7 +203,7 @@ class Matrix
     }
 
     private:
-    std::vector<std::vector<Type>> data_;
+    std::vector<std::vector<Type>> data_; ///< The 2D vector storing the matrix elements.
 
 };
 
