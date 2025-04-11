@@ -60,15 +60,30 @@ target_link_libraries(matrix PRIVATE ${Boost_LIBRARIES})
 
 # Link GoogleTest for unit testing
 enable_testing()
-add_executable(${PROJECT_NAME}_tests ${PRJ_TST_PATH}testMatrix.cpp)
+# Add all test files
+set(TEST_SOURCES
+  ${PRJ_TST_PATH}testGeometricObject.cpp
+  ${PRJ_TST_PATH}testRectangle.cpp
+  ${PRJ_TST_PATH}testCircle.cpp
+  ${PRJ_TST_PATH}testMatrix.cpp
+)
+# Create a single executable for all tests
+add_executable(${PROJECT_NAME}_tests ${TEST_SOURCES})
+# Link the test executable with the library and GoogleTest
 target_link_libraries(${PROJECT_NAME}_tests PRIVATE matrix_lib gtest gtest_main)
 target_include_directories(${PROJECT_NAME}_tests PRIVATE ${PRJ_INC_PATH})
+
+# Link Boost libraries - it is used by gnuplot-iostream
+target_link_libraries(${PROJECT_NAME} PRIVATE ${Boost_LIBRARIES})
+target_link_libraries(matrix_lib PRIVATE ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_tests PRIVATE ${Boost_LIBRARIES})
 
 # Enable code coverage
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(${PROJECT_NAME}_tests PRIVATE --coverage)
     target_link_options(${PROJECT_NAME}_tests PRIVATE --coverage)
 endif()
+
 
 # Add tests
 include(GoogleTest)

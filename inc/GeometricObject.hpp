@@ -29,12 +29,6 @@ namespace GeoObj
         GeometricObject(const std::vector<std::pair<double, double>>& corners);
 
         /**
-         * @brief Constructor with rvalue reference to corners.
-         * @param corners A vector of corner coordinates (rvalue reference).
-         */
-        GeometricObject(std::vector<std::pair<double, double>>&& corners);
-
-        /**
          * @brief Get the number of corners.
          * @return The number of corners.
          */
@@ -61,6 +55,14 @@ namespace GeoObj
          * @brief Print the coordinates of all corners.
          */
         void printCorners();
+
+        /**
+         * @brief Insert a corner at a specific index.
+         * @param idx The index at which to insert the corner.
+         * @param point The coordinates of the corner to insert.
+         */
+        void insterCorner(const size_t idx, const std::pair<double, double>& point);
+        
 
         /**
          * @brief Access a corner by index.
