@@ -4,7 +4,7 @@
 #include "gnuplot-iostream.h"
 #include <vector>
 #include <iostream>
-
+#include "ObjectCounter.hpp"
 namespace GeoObj
 {
     /**
@@ -14,7 +14,7 @@ namespace GeoObj
      * This class provides common functionality for geometric objects,
      * such as managing corners and computing areas.
      */
-    class GeometricObject
+    class GeometricObject : public ObjectCounter<GeometricObject>
     {
         public:
         /**
@@ -74,6 +74,8 @@ namespace GeoObj
         protected:
         std::vector<std::pair<double, double>> corners_; ///< Vector of corner coordinates.
         size_t number_of_corners_; ///< Number of corners.
+
+
     };
 }
 

@@ -9,6 +9,7 @@
 #include "gnuplot-iostream.h"
 #include "Rectangle.hpp"
 #include "Circle.hpp"
+#include "ObjectCounter.hpp"
 
 constexpr int fibo(int el)
 {
@@ -51,12 +52,25 @@ void MultiplicationTest();
 void GnuPlotExample();
 void GnuPlotExample2();
 void GeoObjTest();
+
 int main()
 {
+    ObjectCounter<GeoObj::Circle> circle_ctr;
+    ObjectCounter<GeoObj::Rectangle> rectangle_ctr;
+    ObjectCounter<GeoObj::GeometricObject> geoObj_ctr;
     //MultiplicationTest();
     //GnuPlotExample();
     //GnuPlotExample2();
+
     GeoObjTest();
+    std::cout << "------------------------\n";
+    std::cout << "ObjectCounter test\n";
+    std::cout << "------------------------\n";
+    std::cout << circle_ctr.c_tor_ctr << " Circles were created and " << circle_ctr.d_tor_ctr << " deleted\n";
+    std::cout << rectangle_ctr.c_tor_ctr << " Rectangles were created and " << rectangle_ctr.d_tor_ctr << " deleted\n";
+    std::cout << geoObj_ctr.c_tor_ctr << " GeoObjs were created and " << geoObj_ctr.d_tor_ctr << " deleted\n";
+    
+
     #if 0
     constexpr auto x = 3;
     Matrix<double,x,x> m1;
@@ -244,20 +258,20 @@ void GeoObjTest()
     g1.addCorner(std::pair<double,double>(3.0, 3.0));
     g1.printCorners();
     */
-   GeoObj::Rectangle rect({{1.0, 1.0}, {1.0, 4.0}, {4.0, 4.0}, {4.0, 1.0}});
-   std:: cout<< "Area: " << rect.computeArea() << std::endl;
-   rect.draw();
+    GeoObj::Rectangle rect({{1.0, 1.0}, {1.0, 4.0}, {4.0, 4.0}, {4.0, 1.0}});
+    std:: cout<< "Area: " << rect.computeArea() << std::endl;
+    //rect.draw();
     std::vector<std::pair<double,double>> vec;
     vec.push_back(std::pair<double,double>(1.0,1.0));
     vec.push_back(std::pair<double,double>(4.0,4.0));
     GeoObj::Rectangle s1(vec);
-    s1.draw();
+    //s1.draw();
 
     GeoObj::Rectangle s2(std::vector<std::pair<double,double>>{{1.0, 1.0}, {1.0, 4.0}, {4.0, 4.0}, {4.0, 1.0}});
-    s2.draw();
+    //s2.draw();
     std::vector<GeoObj::GeometricObject> vec_g;
     GeoObj::Circle c1(std::pair<double,double>(2.0,2.0), 1.0);
-    c1.draw();
+    //c1.draw();
 
 
 }

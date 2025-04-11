@@ -43,7 +43,9 @@ add_library(matrix_lib
   ${PRJ_SRC_PATH}Matrix.cpp
   ${PRJ_SRC_PATH}GeometricObject.cpp 
   ${PRJ_SRC_PATH}Circle.cpp 
+  ${PRJ_SRC_PATH}ObjectCounter.cpp 
   ${PRJ_SRC_PATH}Rectangle.cpp )
+
 target_include_directories(matrix_lib PUBLIC ${PRJ_INC_PATH})
 
 # Enable code coverage

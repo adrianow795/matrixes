@@ -2,6 +2,7 @@
 #define SQUARE_HPP_
 
 #include "GeometricObject.hpp"
+#include "ObjectCounter.hpp"
 
 namespace GeoObj
 {
@@ -12,7 +13,7 @@ namespace GeoObj
      * This class inherits from GeometricObject and provides functionality
      * specific to rectangles, such as computing area and drawing.
      */
-    class Rectangle : private GeometricObject
+    class Rectangle : private GeometricObject, public ObjectCounter<Rectangle>
     {
         public:
         /**
