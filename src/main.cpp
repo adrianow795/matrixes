@@ -54,9 +54,9 @@ void GeoObjTest();
 int main()
 {
     //MultiplicationTest();
-    //GnuPlotExample();
+    GnuPlotExample();
     //GnuPlotExample2();
-    GeoObjTest();
+    //GeoObjTest();
     #if 0
     constexpr auto x = 3;
     Matrix<double,x,x> m1;
@@ -204,17 +204,17 @@ void MultiplicationTest()
 
 void GnuPlotExample()
 {
-    GeoObj::GeometricObject g1;
+    GeoObj::GeometricObject g1; 
     Gnuplot gp;
-    std::vector<std::pair<double,double>> xy_pts;
-
-    for(double x = -2.0; x <=2; x += 0.01)
-    {
-        double y = x*x;
-        xy_pts.push_back(std::make_pair(x,y));
-    }
-    gp << "plot '-' with lines title 'y=x^2'\n";
-    gp.send1d(xy_pts);
+    std::vector<std::pair<double, double>> points = {
+        {1, 1}, // A
+        {1, 4}, // B
+        {4, 4}, // D
+        {4, 1},
+        {4, 1}
+    };
+    gp << "plot [-1:5][-1:5] '-' with linespoints title 'Path A->B->D->C'\n";
+    gp.send1d(points);
 }
 
 void GnuPlotExample2()
