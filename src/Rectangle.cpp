@@ -14,58 +14,52 @@ namespace GeoObj
         }
         else
         {
-            a_ = 0;
-            b_ = 0;
+            a_ = 0.0;
+            b_ = 0.0;
         }
     }
 
     double Rectangle::computeArea()
     {
-        auto cornersNumber = getNumberOfConrners();
-        if(cornersNumber == 2)
+
+        if(getNumberOfConrners() == 2)
         {
-            return a_*b_; 
-        }
-        else if(cornersNumber == 4)
-        {
-            auto it_ref = corners_.begin();
-            it_ref++;
-            auto it_a = std::find_if(it_ref, corners_.end(),[&]
-                (std::pair<double, double> x)
-                {
-                    return corners_[0].first == x.first;
-                });
-            auto it_b = std::find_if(it_ref, corners_.end(),[&]
-                (std::pair<double, double> x)
-                {
-                    return corners_[0].second == x.second;
-                });
-            
-            a_ = std::abs(corners_[0].second - it_a.operator*().second);
-            b_ = std::abs(corners_[0].first - it_b.operator*().first);
             return a_*b_; 
         }
         else
         {
-            return 0;
+            return GeometricObject::computeArea();
         }
     }
 
-    void Rectangle::draw() 
+    double Rectangle::computeCircuit()
     {
-        Gnuplot gp;
-        auto cornersNumber = getNumberOfConrners();
-        if(cornersNumber == 2)
+        if(getNumberOfConrners() == 2)
         {
-            gp << "set object 1 rectangle from " << 
-                corners_[0].first << "," << corners_[0].second <<" to " 
-                << corners_[1].first << "," << corners_[1].second 
-                <<"fs empty border lc rgb 'blue'\n";
-            gp << "plot [-1:5][-1:5] 1/0 notitle\n";
+            return 2* a_ + 2*b_;
         }
         else
         {
-            GeometricObject::draw();
+            return GeometricObject::computeCircuit();
+        }
+
+    }
+
+    void Rectangle::draw(Gnuplot& gp, const std::string& title, const std::string& color)
+    {
+        if(getNumberOfConrners() == 2)
+        {
+            gp << "set title '" << title << "'\n";
+            gp << "set object 1 rectangle from " << 
+                corners_[0].first << "," << corners_[0].second <<" to " 
+                << corners_[1].first << "," << corners_[1].second 
+                <<"fs empty border lc rgb '"<< color << "'\n";
+            gp << "plot [-1:5][-1:5] 1/0 \n";
+            
+        }
+        else
+        {
+            GeometricObject::draw(gp, title, color);
         }
 
     }
