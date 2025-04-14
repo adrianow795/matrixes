@@ -1,5 +1,6 @@
 #include "GeometricObject.hpp"
 #include <gtest/gtest.h>
+#include "gnuplot-iostream.h"
 
 TEST(GeometricObjectTest, DefaultConstructor) {
     GeoObj::GeometricObject obj;
@@ -17,14 +18,14 @@ TEST(GeometricObjectTest, InsertCorner) {
     GeoObj::GeometricObject obj;
     obj.addCorner({1.0, 2.0});
     obj.addCorner({3.0, 4.0});
-    obj.insterCorner(1, {2.0, 3.0});
+    obj.insertCorner(1, {2.0, 3.0});
     EXPECT_EQ(obj.getNumberOfConrners(), 3);
     EXPECT_EQ(obj[1], std::make_pair(2.0, 3.0));
 }
 
 TEST(GeometricObjectTest, ComputeArea) {
     GeoObj::GeometricObject obj;
-    EXPECT_EQ(obj.computeArea(), 10); // Placeholder value
+    EXPECT_DOUBLE_EQ(obj.computeArea(), 0.0); // Default area for base class
 }
 
 TEST(GeometricObjectTest, Draw) {
@@ -32,5 +33,6 @@ TEST(GeometricObjectTest, Draw) {
     obj.addCorner({1.0, 1.0});
     obj.addCorner({2.0, 2.0});
     obj.addCorner({3.0, 1.0});
-    EXPECT_NO_THROW(obj.draw());
+    Gnuplot gp;
+    EXPECT_NO_THROW(obj.draw(gp, "GeometricObject", "green"));
 }

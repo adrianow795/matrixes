@@ -17,7 +17,7 @@ namespace GeoObj
     {
         if(r_ != 0.0)
         {
-            return 3.14 * r_ * r_;
+            return M_PI * r_ * r_;
         }
         else
         {
@@ -30,7 +30,7 @@ namespace GeoObj
     {
         if(r_ != 0.0)
         {
-            return 2 * 3.14 * r_;
+            return 2 * M_PI * r_;
         }
         else
         {
