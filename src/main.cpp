@@ -10,6 +10,7 @@
 #include "Rectangle.hpp"
 #include "Circle.hpp"
 #include "ObjectCounter.hpp"
+#include <memory>
 
 constexpr int fibo(int el)
 {
@@ -252,26 +253,68 @@ void GnuPlotExample2()
 
 void GeoObjTest()
 {
-    /*
-    GeoObj::GeometricObject g1;
-    g1.addCorner(std::pair<double,double>(1.0, 1.0));
-    g1.addCorner(std::pair<double,double>(3.0, 3.0));
-    g1.printCorners();
-    */
+
     GeoObj::Rectangle rect({{1.0, 1.0}, {1.0, 4.0}, {4.0, 4.0}, {4.0, 1.0}});
     std:: cout<< "Area: " << rect.computeArea() << std::endl;
-    //rect.draw();
+    GeoObj::Rectangle rect2({{1.0,2.0}});
+    rect2 = rect;
+    std::cout << "Area: " << rect2.computeArea() << std::endl;
+    rect2.printCorners();
+
     std::vector<std::pair<double,double>> vec;
     vec.push_back(std::pair<double,double>(1.0,1.0));
     vec.push_back(std::pair<double,double>(4.0,4.0));
     GeoObj::Rectangle s1(vec);
-    //s1.draw();
-
     GeoObj::Rectangle s2(std::vector<std::pair<double,double>>{{1.0, 1.0}, {1.0, 4.0}, {4.0, 4.0}, {4.0, 1.0}});
-    //s2.draw();
     std::vector<GeoObj::GeometricObject> vec_g;
     GeoObj::Circle c1(std::pair<double,double>(2.0,2.0), 1.0);
-    //c1.draw();
+
+    #if 0 
+    /*
+        Here because we use make_shared<GeoObj::GeometricObject> - new object is created and
+        the object is sliced to parent class. 
+    */
+    std::vector<std::shared_ptr<GeoObj::GeometricObject>> geo_obj_ptr;
+    geo_obj_ptr.push_back(std::make_shared<GeoObj::GeometricObject>(rect));
+    geo_obj_ptr.push_back(std::make_shared<GeoObj::GeometricObject>(rect2));
+    geo_obj_ptr.push_back(std::make_shared<GeoObj::GeometricObject>(s1));
+    geo_obj_ptr.push_back(std::make_shared<GeoObj::GeometricObject>(s2));
+    geo_obj_ptr.push_back(std::make_shared<GeoObj::GeometricObject>(c1));
+    for(auto obj: geo_obj_ptr)
+    {
+        obj->draw();
+    }
+    #endif
+
+    /*
+        Here because we use make_shared<GeoObj::GeometricObject> - new object is created and
+        the object is sliced to parent class. 
+    */
+   std::vector<std::shared_ptr<GeoObj::GeometricObject>> geo_obj_ptr;
+   geo_obj_ptr.push_back(std::make_shared<GeoObj::Rectangle>(rect));
+   geo_obj_ptr.push_back(std::make_shared<GeoObj::Rectangle>(rect2));
+   geo_obj_ptr.push_back(std::make_shared<GeoObj::Rectangle>(s1));
+   geo_obj_ptr.push_back(std::make_shared<GeoObj::Rectangle>(s2));
+   geo_obj_ptr.push_back(std::make_shared<GeoObj::Circle>(c1));
+   for(auto obj: geo_obj_ptr)
+   {
+       obj->draw();
+   }
+
+   std::cout << geo_obj_ptr[4].get() << std::endl;
+   std::cout << &c1 << std::endl;
+
+    #if 0
+    /* in this case child objects are sliced to parent object , because 
+       geo_obj is type of std::vector<GeoObj::GeometricObject> and is not a pointer
+       to std::vector<GeoObj::GeometricObject>*/
+    std::vector<GeoObj::GeometricObject> geo_objs = {rect, rect2, s1, s2, c1};
+    for(auto it = geo_objs.begin(); it != geo_objs.end(); it++)
+    {   
+        it->draw();
+    }
+    #endif
+
 
 
 }

@@ -13,7 +13,7 @@ namespace GeoObj
      * This class inherits from GeometricObject and provides functionality
      * specific to circles, such as computing area and drawing.
      */
-    class Circle : private GeometricObject, public ObjectCounter<Circle>
+    class Circle : public GeometricObject, public ObjectCounter<Circle>
     {
         public:
         /**

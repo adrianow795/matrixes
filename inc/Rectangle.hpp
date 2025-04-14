@@ -13,7 +13,7 @@ namespace GeoObj
      * This class inherits from GeometricObject and provides functionality
      * specific to rectangles, such as computing area and drawing.
      */
-    class Rectangle : private GeometricObject, public ObjectCounter<Rectangle>
+    class Rectangle : public GeometricObject, public ObjectCounter<Rectangle>
     {
         public:
         /**

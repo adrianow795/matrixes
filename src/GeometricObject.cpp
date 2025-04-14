@@ -49,10 +49,10 @@ namespace GeoObj
     }
 
     void GeometricObject::printCorners()
-    {
+    {   
+        auto idx = 0;
         for(auto corner: corners_)
         {
-            auto idx = 0;
             std::cout << "[" << idx++ << "]:" << "(" << corner.first << ", " << corner.second << ")\n";
         }
     }
