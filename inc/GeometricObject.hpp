@@ -109,6 +109,8 @@ namespace GeoObj
          */
         std::pair<double, double>& operator[] (size_t idx);
 
+        void rotate(double angle);
+
         protected:
         std::vector<std::pair<double, double>> corners_; ///< Vector of corner coordinates.
         size_t number_of_corners_; ///< Number of corners.

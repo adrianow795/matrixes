@@ -98,5 +98,20 @@ namespace GeoObj
         }
     }
 
+    void GeometricObject::rotate(double angle)
+    {
+        auto fi = angle *M_PI / 180.0;
+        const double cosFi = std::cos(fi);
+        const double sinFi = std::sin(fi);
+
+        for(auto& corner : corners_)
+        {
+            auto originalX = corner.first;
+            auto originalY = corner.second;
+            corner.first = originalX* cosFi - originalY * sinFi;
+            corner.second = originalX* sinFi + originalY * cosFi;
+        }
+    }
+    
 
 }

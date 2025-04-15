@@ -14,6 +14,7 @@
 #include <vector>
 #include <cmath>
 #include <utility>
+#include <thread>
 
 constexpr int fibo(int el)
 {
@@ -61,6 +62,9 @@ void GnuPlotExample2();
 
 void CircleTest();
 void RectTest();
+void GeoObjTest();
+
+
 int main()
 {
     ObjectCounter<GeoObj::Circle> circle_ctr;
@@ -69,8 +73,9 @@ int main()
     //MultiplicationTest();
     //GnuPlotExample();
     //GnuPlotExample2();
-    RectTest();
-    CircleTest();
+    GeoObjTest();
+    //RectTest();
+   // CircleTest();
     std::cout << "------------------------\n";
     std::cout << "ObjectCounter test\n";
     std::cout << "------------------------\n";
@@ -83,6 +88,28 @@ int main()
 }
 
 
+void GeoObjTest()
+{
+    Gnuplot gp;
+    GeoObj::GeometricObject g1 ({{1.0, 1.0}, {6.0, 1.0}, {5.0, 3.0}, {2.0, 3.0}});
+    g1.draw(gp, "Trapez", "red");
+    double angle;
+    std::cout << "Provide an agle for rotation: ";
+    std::cin >> angle;
+    std::cout << "\nRotation by: " << angle << std::endl;
+    g1.rotate(angle);
+    g1.draw(gp, "TrapezPoRotacji", "blue");
+    using namespace std::chrono_literals;
+    constexpr auto d1{20ms};
+    for(int i = 0; i < 360; i++)
+    {
+        g1.rotate(1);
+        std::this_thread::sleep_for(d1);
+        g1.draw(gp, "TrapezPoRotacji", "blue");
+    }
+    
+}
+
 void RectTest()
 {
     Gnuplot gp;
@@ -93,6 +120,8 @@ void RectTest()
     std::string abc;
     std::cin >> abc;
     r1.draw(gp, "Rect1", abc);
+
+
 
     GeoObj::Rectangle r2 ({{1.0, 2.0}, {3.0,2.0}, {3.0,3.0}, {1.0,3.0}});
     std::cout << "\nRect2 area: " << r2.computeArea() << " and circuit: " << r2.computeCircuit() << "\n";
